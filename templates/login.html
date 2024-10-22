@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %} Login {% endblock %}
+{% block main %}
+<div class="container my-5 p-5 bg-dark text-white text-center">
+    <div class="container rounded p-3 bg-dark text-white text-center">
+        <blockquote class="blockquote">
+            <p>" {{ quote.quote }} "</p>
+            <footer class="blockquote-footer">{{ quote.author }}</footer>
+        </blockquote>
+    </div>
+    <div class="container p-5 border border-dark rounded bg-dark text-white" >
+        <form class="bg-dark text-white" action="/login" method="post" mx-5>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">@</span>
+                <input type="text" autocomplete="off" autofocus required name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" required name="password" placeholder="Password" aria-label="Recipient's username" aria-describedby="basic-addon2">                <span class="input-group-text" id="basic-addon2">Password</span>
+            </div>
+            <button class="btn btn-dark">Sign In</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block title %} Home {% endblock %}
+{% block main %}
+
+<div>
+<h1 class="display-1">MOTIVE</h1>
+<p class="lead text-white" >Goal Sharing Outlet</p>
+</div>
+<div class="container p-3">
+    <div class="p-3 rounded bg-dark text-white text-center">
+    <blockquote>
+            <p class="blockquote">"{{ quote.quote }}"</p>
+                <footer class="blockquote-footer">{{ quote.author }}</footer>
+        </blockquote>
+
+    <form action="/post" method="post">
+        <div class="input-group mb-3">
+            <input type="text" name="goal" id="goal" class="form-control" placeholder="Do this" aria-label="Username">
+            <button class="btn btn-success">Post</button>
+        </div>
+    </form>     
+</div>
+     
+</div>
+       
+
+        <div>
+            <form>
+                <div class="input-group">
+                    <input type="search" name="search" id="search" placeholder="Search goals">
+                    <button class="btn btn-success">search</button>
+                </div>
+            </form>
+            <table class="table table-dark table-striped">
+                <thead>
+                    <th>#</th>
+                    <th>Goal</th>
+                    <th>Posted</th>
+                    <th>Attained Count</th>
+                    <th> </th>
+                </thead>
+                <tbody>
+                    {% for goal in goals %}
+                    <tr>
+                        <td> {{ loop.index + pagination.skip }} </td>
+                        <td> {{ goal.goal }} </td>
+                        <td> {{ goal.posted }} </td>
+                        <td> {{ goal.comp }} </td>
+                        <td> 
+                            {% if goal.goal_id in personal_goals_id_list  %}
+                            <form action="/unattain" method="post">
+                                <input type="hidden" name="type" value="index">
+                                <input type="hidden" name="id" value={{ goal.goal_id }}>
+                                <button class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Goal has not been achieved"> Unattain </button>
+                            {% else %}
+                            <form action="/attain" method="post">
+                                <input type="hidden" name="type" value="index">
+                                <input type="hidden" name="id" value={{ goal.goal_id }}>
+                                <button class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="right" title="Goal has been achieved"> Attained </button>
+                            {% endif %}
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            {{ pagination.links }}
+            {{ pagination.info }}
+        </div>
+    
+</div>
+{% endblock %}

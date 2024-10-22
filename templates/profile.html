@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block title %} Profile {% endblock %}
+{% block main %}
+<div class="mx-auto d-block my-5">
+    <img class="rounded-circle rounded mx-auto d-block w-25 h-25" src = "/static/images/{{ profile_picture }}" alt="profile picture">
+    <p class="display-5 lead"> {{ username }}</p>
+    <p>Goals Attained: {{ goals_count }}</p>
+</div>
+
+<div class="container p-3 rounded bg-dark text-center text-white mb-2">
+    <blockquote class="blockquote">
+        <p>"{{ quote.quote }}"</p>
+        <footer class="blockquote-footer">{{ quote.author }}</footer>
+    </blockquote>
+
+    <form action="/post" method="post">
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Goal</span>
+            <input type="text" name="goal" id="goal" class="form-control" placeholder="Do this" aria-label="Username" aria-describedby="basic-addon1">
+            <button class="btn btn-success">Post</button>
+        </div>
+    </form>  
+</div>
+
+
+
+<h2> MY GOALS </h2>
+<div>
+    <table class="table table-dark table-striped">
+        <thead>
+            <th>#</th>
+            <th>Goal</th>
+            <th>Posted</th>
+            <th>Attained</th>
+            <th>  </th>
+        </thead>
+        <tbody>
+            {% for goal in goals %}
+            <tr>
+                <td> {{ loop.index + pagination.skip }} </td>
+                <td> {{ goal.goal }} </td>
+                <td> {{ goal.posted }} </td>
+                <td> 
+                    {% if goal.status == 'unattained' %}
+                        <form action="/attain" method="post">
+                            <input type="hidden" name="type" value="profile">
+                            <input type="hidden" name="id" value={{ goal.id }}>
+                            <button class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="right" title="Goal has been achieved"> Attained </button>
+                        </form>
+                    {% elif goal.status == 'attained' %}
+                        <form action="/unattain" method="post">
+                            <input type="hidden" name="type" value="profile">
+                            <input type="hidden" name="id" value={{ goal.id }}>
+                            <button class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Goal hasn't been achieved"> Unattain </button>
+                        </form>
+                    {% endif %}
+                </td>
+                <td>
+                        <form action="/delete" method="post">
+                            <input type="hidden" value= {{ goal.id }} name="id">
+                            <button class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Remove goal"> Delete </button>
+                        </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ pagination.links }}
+</div>
+{% endblock %}

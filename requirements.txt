@@ -1,0 +1,10 @@
+cs50
+flask
+flask_session
+flask_paginate
+functools
+os
+werkzeug.exceptions
+werkzeug.security
+werkzeug.utils
+random

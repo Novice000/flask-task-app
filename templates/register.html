@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block title %} Register {% endblock %}
+{% block main %}
+
+<div class="container my-5 p-5 bg-dark text-white text-center">
+    <div class="container rounded p-3 bg-dark text-white text-center">
+        <blockquote class="blockquote">
+            <p>" {{ quote.quote }} "</p>
+            <footer class="blockquote-footer">{{ quote.author }}</footer>
+        </blockquote>
+    </div>
+
+    <div class="container p-4 border border-dark rounded bg-dark">
+        <form action="/register" method="post" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Username</span>
+                <input type="text" name="username" required autocomplete="off" autofocus class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+
+            <select  name="gender" class="form-select form-select-sm mb-3" aria-label=".form-select-sm">
+                <option selected disabled>Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" required name="password" placeholder="Password" aria-describedby="basic-addon2">
+                <span class="input-group-text" id="basic-addon2">Password</span>
+            </div>
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" required name="pass_confirm" placeholder="Confirm Password" aria-describedby="basic-addon2">
+                <span class="input-group-text" id="basic-addon2">Password</span>
+            </div>
+            
+            <div class="input-group mb-3">
+                <input type="file" name="pfp" class="form-control" accept="images/*" id="inputGroupFile02">
+                <label class="input-group-text" for="inputGroupFile02">Upload</label>
+            </div>
+
+            <button class="btn btn-outline-light">Sign Up</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
