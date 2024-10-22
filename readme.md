@@ -1,5 +1,4 @@
 # MOTIVE
-#### Video Demo:  <https://youtu.be/LaGtW6ag-JI>
 #### **Description** : 
 This project is a goal sharing web app. Essentially an app where you post or upload a goal. Then you can get to click a button if you have achieved it and then others too can get to do the same if they have achieved the same goal.
 
