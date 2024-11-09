@@ -1,41 +1,65 @@
-# MOTIVE
-#### **Description** : 
-This project is a goal sharing web app. Essentially an app where you post or upload a goal. Then you can get to click a button if you have achieved it and then others too can get to do the same if they have achieved the same goal.
+# MOTIVE: Goal Sharing Web App
+
+**MOTIVE** is a goal-sharing web application designed to help users set, share, and track personal goals. The app allows users to post goals, mark them as achieved, and view others' achievements, providing a shared space for mutual inspiration and accountability. Randomly generated motivational quotes further encourage users on their goal journeys.
+
+## Features
+
+- **Goal Posting and Sharing**: Post your own goals, and see a community-wide archive of goals to get inspired by others’ achievements.
+- **Goal Tracking**: Mark goals as achieved, and let others acknowledge the same by marking those goals achieved if they share similar goals.
+- **User Authentication**: Register, log in, and manage your profile, including a profile photo.
+- **Pagination and Search**: View goals with paginated tables and search functionality to find specific goals.
+- **Random Motivation**: Get randomly generated motivational quotes on each page to stay inspired.
 
 ## Files/Folders
 
 ### Template Folder
 
-##### layout.html:
-This contains the template for every html file in the templates folder. It contains link to the bootstrap styling and javascript. It also contains a responsive navbar which is present in every other page. The navbars contains links to the different html pages which also includes a dropdown. It also contains two blocks for the title and the main block (jinja templating), for the page title and the main html code respectively. Navbar also contain different element depending on if the user is logged in or not. It also contains a script tag which contains javascript to enable tooltips.
+The templates folder contains the HTML files that define the structure of each page.
 
-##### index.html:
-This page contains multiple elements. The top part of the page contains the project name and what is essentially a motto. It is important to mention that the page requires logging in. It is an archive for all the goals achieved by each user, with an option for other users to also add to their list of attained goals. All of which are in an html table and uses jinja templating. Tables also contain a field to search goals table by goal. It also contains and input tag for the option to add to your list of goals from what is essentially the homepage. It also contains pagination links as the goals table as been paginated to prevent the the html table from getting really long. This page also contains randomly generated motivational quotes, since it's a goal sharing app.
+- **`layout.html`**: The base layout for all pages, featuring:
+  - Bootstrap styling and JavaScript for responsive design.
+  - A customizable navbar with links to different pages, including a dropdown menu that adapts based on user login status.
+  - Template blocks for `title` and `main` content, allowing child templates to insert their page-specific content.
+  - JavaScript to enable tooltips for an enhanced user experience.
 
-##### login.html:
-This page contains a form with input element for username and password to aid logging in. It is the page where users are redirect to in the event they aren't already logged in. This page also contains randomly generated quotes at the top, seeing as the app is a goal sharing app, I decided to add motivation.
+- **`index.html`**: 
+  - Displays the main archive of all user-posted goals, where users can view and add goals to their own achievement list.
+  - Contains a search bar for filtering goals by name, pagination controls, and randomly generated motivational quotes.
+  - Allows users to add new goals directly from the homepage.
 
-##### profile.html
-This is the profile page, it contains the users profile photo. The username and a table of all goals posted or uploaded by the user not that of all users. All goals are, of course, in an html table and jinja is used to make rows dynamic. The table also has also been paginated to avoid the the length of the page from becoming unreasonably long. The table also contains button with the option to add a goal to the list of attained goals or to remove it from such list and the ability to delete a goal. This page also contains randomly generated quote and a form with which new goals can be added.
+- **`login.html`**: 
+  - Provides a login form with fields for username and password.
+  - Redirects users here if they attempt to access restricted pages without logging in.
+  - Displays motivational quotes for encouragement.
 
-##### register.html
-The register page contains a form with multiple input elements; an input element for the username, password, password confirmation and for the user's profile picture. The input types are text, password and file. These are to aid the registration of a new user. The page also contains randomly generated quotes for the aim of motivating the user.
+- **`profile.html`**:
+  - A user-specific profile page, showing the user’s profile photo, username, and a personal list of goals.
+  - Lists all goals posted by the user, with options to mark them as achieved, remove them, or delete them entirely.
+  - Contains pagination and randomly generated motivational quotes, along with a form to add new goals.
 
-##### error.html
-It is a very simple html page that uses jinja template to catch error in the web app. It displays the cause of the error allowing the user to go back. These page is to catch expected errors though.
+- **`register.html`**: 
+  - Contains a registration form with input fields for username, password, password confirmation, and profile photo upload.
+  - Motivational quotes are displayed to encourage new users during the registration process.
 
-### static folder
-This folder contains the style.css file and the image folder. The first of which contains the css for the the project and the image folder contains the files uplaoded by the user, which will all be images of different file formats. The CSS file contains the styling for the pagination links and background color for the body of all html pages in the project.
+- **`error.html`**: 
+  - A simple error page that uses Jinja templating to display user-friendly error messages and allows users to return to the previous page.
 
-### motive.db
-This is the database for the project. It contains all tables which are used in the project. The schema of the database is below;
+### Static Folder
+
+- **`style.css`**: Custom CSS for the project, defining styles for pagination links, background color, and other elements across all pages.
+- **Image Folder**: Stores user-uploaded profile pictures and any other images used in the project.
+
+### Database (`motive.db`)
+
+The application uses SQLite for all data storage needs. The database includes several tables:
 
 ```sql
 CREATE TABLE users (
     id INTEGER PRIMARY KEY NOT NULL,
     username TEXT UNIQUE NOT NULL,
-    hashed_password TEXT,
-    gender text);
+    hashed_password TEXT NOT NULL,
+    gender TEXT
+);
 
 CREATE TABLE goals (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,8 +70,6 @@ CREATE TABLE goals (
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE TABLE sqlite_sequence(name,seq);
-
 CREATE TABLE attained (
     goal_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
@@ -56,29 +78,40 @@ CREATE TABLE attained (
     CONSTRAINT goal_user UNIQUE (goal_id, user_id)
 );
 
-CREATE TABLE quotes (id integer primary key,author text, quote text not null);
-CREATE TABLE IF NOT EXISTS "quotes_temp;"(
-  "Author" TEXT,
-  "Quote" TEXT
+CREATE TABLE quotes (
+    id INTEGER PRIMARY KEY,
+    author TEXT,
+    quote TEXT NOT NULL
 );
-
 ```
-The project uses sqlite for all database actions.
 
-### helper.py
-This is a python script that contains three functions used in the app. The login decorator function written by the cs50 staff which redirects users to the login page in the events they are not already logged in, The allowed_file from the flask documentation which helps check the file formats of uploads in the the register page and the get_type function to get the file format.
+### Python Files
 
-### requirements.txt
-This contains all the dependencies for the project. All the dependencies can be installed from the CLI with 
+- **`app.py`**: The main Flask application file, containing all view functions and routes for login, logout, registration, goal posting, deletion, and more. It is the central script managing user interaction and database transactions.
+  
+- **`helper.py`**: Contains helper functions, including:
+  - **`login_required`**: A decorator provided by CS50 staff to restrict access to certain routes for logged-in users only.
+  - **`allowed_file`**: A function from the Flask documentation to validate uploaded file types.
+  - **`get_type`**: A utility to detect file types for uploads.
 
+### `requirements.txt`
+
+A list of all dependencies for the project, which can be installed by running:
 ```bash
 pip install -r requirements.txt
 ```
 
-The command must be ran from the root folder or the folder containing the requirements.txt file.
+### Future Improvements
 
-### app.py
-This python script contains all view functions for almost all functionalities of the app. It has quite a few imports to help with making these functionalities. The app,py implements log-in, log-out, registration, delete, post and many other functionalities which the app comes with.
+While the current version of **MOTIVE** is functional, there are several enhancements I plan to implement:
+- **Enhanced Notifications**: Notifications for when others achieve goals you've set.
+- **Goal Categories**: Categorize goals for better organization.
+- **Improved UX**: Additional features to improve user engagement and ease of navigation.
 
-### conclusion
-There's still a lot more to be added to the app. A project is never truly complete. I feel there's still a lot more I could do to make it better.
+## Acknowledgments
+
+This project includes foundational code provided by the CS50 staff, specifically for the login-required functionality and guidance on structuring a web application with Flask. Custom features and design choices, including Bootstrap styling and additional functionalities, were added based on my own preferences.
+
+## License
+
+This project is licensed under the MIT License. Please follow CS50’s [academic honesty policy](https://cs50.harvard.edu/x/2023/honesty/) if referencing or using parts of this code for academic or project purposes.
